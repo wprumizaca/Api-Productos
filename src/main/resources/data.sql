@@ -7,3 +7,6 @@ insert into product (id, nombre, precio) values (default, 'Bread - Wheat Baguett
 insert into product (id, nombre, precio) values (default, 'Quail - Eggs, Fresh', 3);
 insert into product (id, nombre, precio) values (default, 'Cheese - Mascarpone', 97);
 insert into product (id, nombre, precio) values (default, 'Mace', 25);
+insert into categoria (id, nombre) values (default , 'Comida');
+insert into categoria (id, nombre) values (default , 'Bebida');
+insert into categoria (id, nombre) values (default , 'Complementos');

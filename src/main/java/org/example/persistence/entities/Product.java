@@ -3,10 +3,7 @@ package org.example.persistence.entities;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @Entity //Esta anotación es de JPA
@@ -19,4 +16,9 @@ public class Product {
     private String nombre;
 
     private float precio;
+
+    //Relacion de muchos a uno. La entidad que tiene 1 pasa a la entidad que tiene muchos, en este caso muchos en Product
+    @ManyToOne
+    @JoinColumn(name="id_category", nullable = false)
+    private Category category;
 }

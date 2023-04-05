@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+
 @Data //contiene anotaciones como @getters, @setters, @tostring, etc
 @Entity //Para indicar que esta clase persistente es una entidad
 public class Category {
@@ -14,4 +15,6 @@ public class Category {
     private Long id;
 
     private String nombre;
+
+
 }
