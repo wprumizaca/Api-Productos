@@ -1,12 +1,10 @@
-insert into product (id, nombre, precio) values (default, 'Juice - Orange, Concentrate', 91);
-insert into product (id, nombre, precio) values (default, 'Beef - Ground, Extra Lean, Fresh', 87);
-insert into product (id, nombre, precio) values (default, 'Cheese - Parmesan Grated', 39);
-insert into product (id, nombre, precio) values (default, 'Cups 10oz Trans', 67);
-insert into product (id, nombre, precio) values (default, 'Wine - Beringer Founders Estate', 27);
-insert into product (id, nombre, precio) values (default, 'Bread - Wheat Baguette', 82);
-insert into product (id, nombre, precio) values (default, 'Quail - Eggs, Fresh', 3);
-insert into product (id, nombre, precio) values (default, 'Cheese - Mascarpone', 97);
-insert into product (id, nombre, precio) values (default, 'Mace', 25);
-insert into categoria (id, nombre) values (default , 'Comida');
-insert into categoria (id, nombre) values (default , 'Bebida');
-insert into categoria (id, nombre) values (default , 'Complementos');
+insert into category (id, nombre) values (default , 'Comida');
+insert into category (id, nombre) values (default , 'Bebida');
+insert into category (id, nombre) values (default , 'Complementos');
+
+insert into product (id, nombre, precio, categoria_id) values (default , 'Juice - Orange, Concentrate', 91, 2);
+insert into product (id, nombre, precio, categoria_id) values (default , 'Beef - Ground, Extra Lean, Fresh', 87, 1);
+insert into product (id, nombre, precio, categoria_id) values (default , 'Cheese - Parmesan Grated', 39, 1);
+insert into product (id, nombre, precio, categoria_id) values (default , 'Cups 10oz Trans', 67, 1);
+insert into product (id, nombre, precio, categoria_id) values (default , 'Wine - Beringer Founders Estate', 27, 2);
+insert into product (id, nombre, precio, categoria_id) values (default , 'Bread - Wheat Baguette', 82, 2);
