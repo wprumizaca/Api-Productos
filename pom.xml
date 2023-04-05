@@ -19,6 +19,7 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <mapper.version>3.1.1</mapper.version>
     </properties>
 
     <dependencies>
@@ -68,6 +69,12 @@
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
             <optional>true</optional>
+        </dependency>
+        <!--Dependencia para transformar objetos(entidades) a DTO y vicevers-->
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>${mapper.version}</version>
         </dependency>
     </dependencies>
 
