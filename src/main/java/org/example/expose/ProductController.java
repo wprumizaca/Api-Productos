@@ -1,9 +1,12 @@
 package org.example.expose;
 
 import lombok.RequiredArgsConstructor;
-import org.example.expose.dto.ProductDTOResponse;
-import org.example.expose.dto.converter.ProductoDTOConverter;
+import org.example.expose.dto.ProductResponse;
+import org.example.expose.dto.SaveProductRequest;
+import org.example.expose.converter.ProductoDTOConverter;
+import org.example.expose.dto.UpdateProductRequest;
 import org.example.persistence.entities.Product;
+import org.example.persistence.repositories.CategoryRepository;
 import org.example.persistence.repositories.ProductRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,20 +15,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// @RequestBody Permite inyectar el cuerpo de la petición en un objeto
-// @PathVariable Nos permite inyectar un fragmento de la URL en una variable
+@RestController
 
-
-@RestController //hace la conversion de lo que da el objeto a lo que verá el cliente (json, xml, etc)
-
-@RequiredArgsConstructor //Crea el contructor
+@RequiredArgsConstructor
 public class ProductController {
 
     private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
 
     //Creamo objeto del componente de utilidad para poder hacer la transformación de producto a productDTO
     private final ProductoDTOConverter productoDTOConverter;
-    //Devolver todos los productos
+
+
+    //Devolver todos los productos y el nombre de la categoria
     @GetMapping("/product")
 //    public List<Product> productList(){
 //
@@ -36,7 +38,7 @@ public class ProductController {
         if(result.isEmpty()){
             return ResponseEntity.notFound().build();
         }else{
-            List<ProductDTOResponse> dtoResult = result.stream()
+            List<ProductResponse> dtoResult = result.stream()
                     .map(productoDTOConverter::convertToDto)
                     .collect(Collectors.toList());
             return ResponseEntity.ok(dtoResult);
@@ -53,7 +55,8 @@ public class ProductController {
         if (result == null){
             return ResponseEntity.notFound().build();
         }else{
-            return ResponseEntity.ok(result);
+            ProductResponse dtoResult = productoDTOConverter.convertToDto(result);
+            return ResponseEntity.ok(dtoResult);
         }
     }
 
@@ -62,11 +65,22 @@ public class ProductController {
 //    public Product createproduct(@RequestBody Product nuevo){
 //        return productRepository.save(nuevo);
 //    }
-    public ResponseEntity<?>createProduct(@RequestBody Product nuevo){
-        Product saved = productRepository.save(nuevo);
-//        return  ResponseEntity.created(location).body(saved); location hace referencia a la url que puede consultar el cliente para ver que el producto se ha creado
-        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+//    public ResponseEntity<?>createProduct(@RequestBody Product nuevo){
+//        Product saved = productRepository.save(nuevo);
+////        return  ResponseEntity.created(location).body(saved); location hace referencia a la url que puede consultar el cliente para ver que el producto se ha creado
+//        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+//    }
+
+    public ResponseEntity<?>createProduct(@RequestBody SaveProductRequest nuevo){
+
+        //Lo primero que hacemos es pasar el DTO a una entidad. Después guardamos los datos de esa entidad.
+       Product product = productoDTOConverter.convertToProduct(nuevo);
+
+       return ResponseEntity.status(HttpStatus.CREATED).body(productRepository.save(product));
+
+
     }
+
 
     //Modificar producto
     @PutMapping("/product/{id}")
@@ -78,8 +92,7 @@ public class ProductController {
 //            return null;
 //        }
 //    }
-    public ResponseEntity<?> modifiedProduct(@RequestBody Product modified, @PathVariable Long id){
-//       productRepository.findById(id).map();
+    public ResponseEntity<?> modifiedProduct(@RequestBody UpdateProductRequest modified, @PathVariable Long id){
 //OTRA MANERA DE HACERLO
 //        if (productRepository.existsById(id)){
 //            modified.setId(id);
@@ -87,13 +100,20 @@ public class ProductController {
 //        }else{
 //            return  ResponseEntity.notFound().build();
 //        }
-        return productRepository.findById(id).map(p ->{
-            p.setNombre(modified.getNombre());
-            p.setPrecio(modified.getPrecio());
-            return ResponseEntity.ok(productRepository.save(p));
-        }).orElseGet(() ->{
-            return ResponseEntity.notFound().build();
-        });
+//        return productRepository.findById(id).map(p ->{
+//            p.setNombre(modified.getNombre());
+//            p.setPrecio(modified.getPrecio());
+//            return ResponseEntity.ok(productRepository.save(p));
+//        }).orElseGet(() ->{
+//            return ResponseEntity.notFound().build();
+//        });
+        if (productRepository.existsById(id)){
+            Product product = productoDTOConverter.convertToProductU(modified);
+            product.setId(id);
+            return ResponseEntity.ok(productRepository.save(product));
+        }else{
+            return  ResponseEntity.notFound().build();
+        }
     }
 
     //Borrar un producto
@@ -122,5 +142,6 @@ public class ProductController {
         }).orElseGet(() ->{
             return ResponseEntity.notFound().build();
         });
+
     }
 }
