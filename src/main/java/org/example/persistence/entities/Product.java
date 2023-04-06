@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Entity //Esta anotación es de JPA
 public class Product {
 
-    @Id @GeneratedValue //Te autogenera el valor ID.
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) //Te autogenera el valor ID.
     private Long id;
 
     //@Column(name="name") Poner el nombre que queremos que tenga esta columna en la base de datos
