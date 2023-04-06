@@ -1,14 +1,16 @@
 package org.example.expose;
 
 import lombok.RequiredArgsConstructor;
+import org.example.expose.dto.ProductDTOResponse;
+import org.example.expose.dto.converter.ProductoDTOConverter;
 import org.example.persistence.entities.Product;
 import org.example.persistence.repositories.ProductRepository;
-import org.hibernate.annotations.SQLInsert;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 // @RequestBody Permite inyectar el cuerpo de la petición en un objeto
 // @PathVariable Nos permite inyectar un fragmento de la URL en una variable
@@ -16,17 +18,13 @@ import java.util.List;
 
 @RestController //hace la conversion de lo que da el objeto a lo que verá el cliente (json, xml, etc)
 
-//@RequiredArgsConstructor
+@RequiredArgsConstructor //Crea el contructor
 public class ProductController {
 
     private final ProductRepository productRepository;
 
-    //Si no queremos poner las líneas del contolador usar --> @RequiredArgsConstructor
-    public ProductController(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
-
-
+    //Creamo objeto del componente de utilidad para poder hacer la transformación de producto a productDTO
+    private final ProductoDTOConverter productoDTOConverter;
     //Devolver todos los productos
     @GetMapping("/product")
 //    public List<Product> productList(){
@@ -38,7 +36,10 @@ public class ProductController {
         if(result.isEmpty()){
             return ResponseEntity.notFound().build();
         }else{
-            return ResponseEntity.ok(result);
+            List<ProductDTOResponse> dtoResult = result.stream()
+                    .map(productoDTOConverter::convertToDto)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(dtoResult);
         }
     }
 

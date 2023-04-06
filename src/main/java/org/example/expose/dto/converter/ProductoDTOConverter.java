@@ -6,8 +6,8 @@ import org.example.persistence.entities.Product;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
-@Component @RequiredArgsConstructor
-public class ProductoDTOConverter {
+@Component @RequiredArgsConstructor //@Component -> la clase será un componente de utilidad
+public class ProductoDTOConverter { //Esta clase crea un productoDTO a partir de un producto con ayuda de ModelMapper
 
     private final ModelMapper modelMapper;
 

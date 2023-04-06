@@ -9,5 +9,5 @@ public class ProductDTOResponse {
 
     private String nombre;
     private float precio;
-    private String categoriaNombre;
+    private String categoryNombre;
 }
