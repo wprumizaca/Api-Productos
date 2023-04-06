@@ -19,6 +19,6 @@ public class Product {
 
     //Relacion de muchos a uno. La entidad que tiene 1 pasa a la entidad que tiene muchos, en este caso muchos en Product
     @ManyToOne
-    @JoinColumn(name="categoria_id", nullable = false)
+    @JoinColumn(name="categoria_id", nullable = false) //categoria_id será el nombre de la columna en la tabla product.
     private Category category;
 }
